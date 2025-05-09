@@ -4,7 +4,7 @@ import { doc, getDoc, updateDoc, deleteDoc, collection, getDocs } from 'firebase
 import { db, auth } from './firebase';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import '../css/UserProfile.css';
-import logo from '../assets/CobConnectLogo.png';
+import logo from '../assets/CobconnectLogo.png';
 import logotext from '../assets/textLogo.png';
 
 const UserProfile = () => {
