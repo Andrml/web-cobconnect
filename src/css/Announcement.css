@@ -14,92 +14,9 @@
     background-color: var(--light);
     overflow: hidden;
   }
-  
-  .sidebar {
-    width: 380px;
-    background: linear-gradient(135deg, #45cfe8, #515bec);
-    color: white;
-    padding: 25px 0;
-    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 10;
-  }
-  
-  .logo-wrapper {
-    padding: 0 20px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .logo-img {
-    height: 60px;
-    width: auto;
-  }
-  
-  .logo-text-img {
-    height: 40px;
-    width: auto;
-  }
-  
-  .sidebar nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 20px 0 0;
-  }
-  
-  .sidebar nav li {
-    padding: 12px 25px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .sidebar nav li:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .sidebar nav li.active {
-    background-color: var(--primary);
-  }
-  
-  .nav-icon {
-    font-size: 1.1rem;
-  }
-  
-  .logout-section {
-    margin-top: auto;
-    padding: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .logout-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    padding: 10px 15px;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .logout-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-  
   .main-content {
-    flex: 1;
-    margin-left: 10px;
+    width: 100%;
     padding: 20px;
-    overflow-y: auto;
-    height: 100vh;
   }
   
   .announcement-title {

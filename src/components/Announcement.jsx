@@ -4,8 +4,6 @@ import { collection, addDoc, onSnapshot, serverTimestamp } from 'firebase/firest
 import { db, auth } from './firebase';
 import { signOut } from 'firebase/auth';
 import '../css/Announcement.css';
-import logo from '../assets/CobconnectLogo.png';
-import logotext from '../assets/textLogo.png';
 import { FiHome, FiBell, FiUsers, FiLogOut } from 'react-icons/fi';
 
 const Announcement = () => {
@@ -73,31 +71,6 @@ const Announcement = () => {
 
   return (
     <div className="announcement-container">
-      <div className="sidebar">
-        <div className="logo-wrapper">
-          <img src={logo} alt="Logo" className="logo-img" />
-          <img src={logotext} alt="cobconnect" className="logo-text-img" />
-        </div>
-        <nav>
-          <ul>
-            <li onClick={() => navigate('/dashboard')}>
-              <FiHome className="nav-icon" /> Dashboard
-            </li>
-            <li className="active" onClick={() => navigate('/announcement')}>
-              <FiBell className="nav-icon" /> Announcements
-            </li>
-            <li onClick={() => navigate('/accountselection')}>
-              <FiUsers className="nav-icon" /> Manage Accounts
-            </li>
-          </ul>
-          <div className="logout-section">
-            <button className="logout-btn" onClick={handleLogout}>
-              <FiLogOut className="nav-icon" /> Log Out
-            </button>
-          </div>
-        </nav>
-      </div>
-
       <div className="main-content">
         <h1 className="announcement-title">Announcements</h1>
 

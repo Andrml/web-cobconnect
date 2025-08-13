@@ -2,20 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db, auth } from './firebase';
-import { signOut } from 'firebase/auth';
-import { FiTrendingUp, FiHome, FiBell, FiUsers, FiLogOut } from 'react-icons/fi';
+import { FiTrendingUp} from 'react-icons/fi';
 import { BsPersonFill, BsPersonCheckFill, BsWallet2 } from 'react-icons/bs';
-import { startOfMonth, endOfMonth, startOfYear, endOfYear } from 'date-fns';
-import textLogo from '../assets/textLogo.png';
-import logo from '../assets/CobconnectLogo.png';
 import '../css/Dashboard.css';
 
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeCard, setActiveCard] = useState('totalAccounts');
-  const [activePeriod, setActivePeriod] = useState('month');
-  const [isLoading, setIsLoading] = useState(true);
   const [cobblersCount, setCobblersCount] = useState(0);
   const [customersCount, setCustomersCount] = useState(0);
   const [walletBalance, setWalletBalance] = useState(0);
@@ -81,42 +75,8 @@ const Dashboard = () => {
     setActivePeriod(period);
   };
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      navigate('/');
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
-
   return (
     <div className="dashboard-container">
-      <div className="dashboard-sidebar">
-        <div className="logo-wrapper">
-          <img src={logo} alt="Logo" className="logo-img" />
-          <img src={textLogo} alt="cobconnect" className="logo-text-img" />
-        </div>
-        <nav>
-          <ul>
-            <li className="active">
-              <FiHome className="nav-icon" /> Dashboard
-            </li>
-            <li onClick={() => navigate('/announcement')}>
-              <FiBell className="nav-icon" /> Announcements
-            </li>
-            <li onClick={() => navigate('/accountselection')}>
-              <FiUsers className="nav-icon" /> Manage Accounts
-            </li>
-          </ul>
-          <div className="logout-section">
-            <button className="logout-btn" onClick={handleLogout}>
-              <FiLogOut className="nav-icon" /> Log Out
-            </button>
-          </div>
-        </nav>
-      </div>
-
       <div className="dashboard-main-content">
         <header className="dashboard-header">
           <h1>Welcome back, Admin!</h1>

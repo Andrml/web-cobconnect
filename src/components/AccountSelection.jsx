@@ -5,8 +5,6 @@ import { db, auth } from './firebase';
 import { signOut } from 'firebase/auth';
 import defaultAvatar from '../assets/profile-placeholder.png';
 import '../css/AccountSelection.css';
-import textLogo from '../assets/textLogo.png';
-import logo from '../assets/CobconnectLogo.png';
 import { FiUsers, FiUser, FiUserCheck, FiHome, FiBell, FiLogOut, FiChevronRight, FiSearch, FiFilter } from 'react-icons/fi';
 
 const AccountSelection = () => {
@@ -96,36 +94,6 @@ const AccountSelection = () => {
 
   return (
     <div className="account-container">
-     <div className="account-sidebar">
-        <div className="logo-wrapper">
-          <img src={logo} alt="Logo" className="logo-img" />
-          <img src={textLogo} alt="cobconnect" className="logo-text-img" />
-        </div>
-        <nav>
-          <ul>
-            <li onClick={() => navigate('/dashboard')}>
-              <FiHome className="nav-icon" /> Dashboard
-            </li>
-            <li onClick={() => navigate('/announcement')}>
-              <FiBell className="nav-icon" /> Announcements
-            </li>
-            <li className="active" onClick={() => navigate('/accountselection')}>
-              <FiUsers className="nav-icon" /> Manage Accounts
-            </li>
-          </ul>
-          <div className="logout-section">
-            <button className="logout-btn" onClick={handleLogout}>
-              <FiLogOut className="nav-icon" /> Log Out
-            </button>
-          </div>
-        </nav>
-      </div>
-        <div className="logout-section">
-          <button className="logout-btn" onClick={handleLogout}>
-            <FiUser className="nav-icon" />
-            <span>Logout</span>
-          </button>
-        </div>
       <div className="account-main-content">
         <h1 className="account-title">User Accounts</h1>
         <p className="account-subtitle">Manage all user accounts in one place</p>
