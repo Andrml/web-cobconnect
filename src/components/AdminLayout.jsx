@@ -2,7 +2,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from './firebase';
-import { FiHome, FiBell, FiUsers, FiLogOut, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiHome, FiBell, FiUsers, FiLogOut, FiMenu} from 'react-icons/fi';
 import logo from '../assets/CobconnectLogo.png';
 import textLogo from '../assets/textLogo.png';
 import '../css/AdminLayout.css';
@@ -33,8 +33,19 @@ const AdminLayout = () => {
         <div className="sidebar-header">
           <div className="logo-wrapper">
             <img src={logo} alt="Logo" className="logo-img" />
-            <img src={textLogo} alt="CobConnect" className="logo-text-img" />
+            <img 
+              src={textLogo} 
+              alt="CobConnect" 
+              className="logo-text-img" 
+              style={{ 
+                opacity: isCollapsed ? 0 : 1,
+                width: isCollapsed ? 0 : 'auto'
+              }} 
+            />
           </div>
+          <button className="header-toggle" onClick={toggleSidebar} onMouseDown={(e) => e.preventDefault()}>
+                  {isCollapsed ? <FiMenu /> : <FiMenu />}
+          </button>
         </div>
 
         <nav>
@@ -72,10 +83,6 @@ const AdminLayout = () => {
             <span>Logout</span>
           </button>
         </div>
-
-        <button className="collapse-toggle" onClick={toggleSidebar}>
-          {isCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
-        </button>
       </div>
 
       <div className="admin-main-content">

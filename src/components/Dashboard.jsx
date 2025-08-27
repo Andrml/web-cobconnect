@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db, auth } from './firebase';
-import { FiTrendingUp} from 'react-icons/fi';
+import { signOut } from 'firebase/auth';
+import { FiTrendingUp, FiHome, FiBell, FiUsers, FiLogOut } from 'react-icons/fi';
 import { BsPersonFill, BsPersonCheckFill, BsWallet2 } from 'react-icons/bs';
 import '../css/Dashboard.css';
-
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeCard, setActiveCard] = useState('totalAccounts');
+  const [activePeriod, setActivePeriod] = useState('month');
+  const [isLoading, setIsLoading] = useState(true);
   const [cobblersCount, setCobblersCount] = useState(0);
   const [customersCount, setCustomersCount] = useState(0);
   const [walletBalance, setWalletBalance] = useState(0);
@@ -41,6 +43,7 @@ const Dashboard = () => {
             const totalAmount = fee / 0.10;
         
             return {
+              id: doc.id,
               date: new Date(data.timestamp).toLocaleString(),
               fee: fee,
               amount: totalAmount,
@@ -73,6 +76,15 @@ const Dashboard = () => {
 
   const handlePeriodChange = (period) => {
     setActivePeriod(period);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   return (
@@ -125,34 +137,37 @@ const Dashboard = () => {
           </div>
         </div>
 
-        
-        <div className="wallet-card">
-          <div className="card-header">
-            <h2>Transaction History</h2>
-            <span className="commission-rate">10% Commission</span>
-          </div>
-          
-          <div className="transaction-list">
-            {transactions.length > 0 ? (
-              transactions.map(txn => (
-                <div key={txn.id} className={`transaction-item ${txn.status}`}>
-                  <div className="transaction-info">
-                    <div className="transaction-meta">
-                      <span className="transaction-date">{txn.date}</span>
+        <div className="wallet-balance-container">
+          <div className="wallet-card">
+            <div className="card-header">
+              <h2>Transaction History</h2>
+              <span className="commission-rate">10% Commission</span>
+            </div>
+            
+            <div className="transaction-list">
+              {isLoading ? (
+                <div className="empty-state">Loading transactions...</div>
+              ) : transactions.length > 0 ? (
+                transactions.map(txn => (
+                  <div key={txn.id} className={`transaction-item ${txn.status}`}>
+                    <div className="transaction-info">
+                      <div className="transaction-meta">
+                        <span className="transaction-date">{txn.date}</span>
+                      </div>
+                    </div>
+                    <div className="transaction-amount">
+                      <div className="transaction-fee">
+                        <span>+{formatCurrency(txn.fee)}</span>
+                        <span className="status-badge">{txn.status}</span>
+                      </div>
+                      <div className="transaction-total">{formatCurrency(txn.amount)} total</div>
                     </div>
                   </div>
-                  <div className="transaction-amount">
-                    <div className="transaction-fee">
-                    <span>+{formatCurrency(txn.fee)}</span>
-                      <span className="status-badge">{txn.status}</span>
-                    </div>
-                    <div className="transaction-total">{formatCurrency(txn.amount)} total</div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="empty-state">No transactions found</div>
-            )}
+                ))
+              ) : (
+                <div className="empty-state">No transactions found</div>
+              )}
+            </div>
           </div>
         </div>
         

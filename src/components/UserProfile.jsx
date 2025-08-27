@@ -4,8 +4,6 @@ import { doc, getDoc, updateDoc, deleteDoc, collection, getDocs } from 'firebase
 import { db, auth } from './firebase';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import '../css/UserProfile.css';
-import logo from '../assets/CobconnectLogo.png';
-import logotext from '../assets/textLogo.png';
 
 const UserProfile = () => {
   const { type, id } = useParams();
@@ -15,15 +13,6 @@ const UserProfile = () => {
   const [error, setError] = useState(null);
   const [certificateUrl, setCertificateUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
-  const handleLogout = async () => {
-    try {
-      await auth.signOut();
-      navigate('/');
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -147,21 +136,38 @@ const UserProfile = () => {
     }
   };
 
-  if (loading) return <div className="loading">Loading user data...</div>;
-  if (error) return <div className="error">{error}</div>;
-  if (!user) return <div className="error">User not found</div>;
+  if (loading) return (
+    <div className="user-profile-container">
+      <button className="close-btn-top-right" onClick={() => navigate(-1)} aria-label="Close">
+        ×
+      </button>
+      <div className="loading">Loading user data...</div>
+    </div>
+  );
+  
+  if (error) return (
+    <div className="user-profile-container">
+      <button className="close-btn-top-right" onClick={() => navigate(-1)} aria-label="Close">
+        ×
+      </button>
+      <div className="error">{error}</div>
+    </div>
+  );
+  
+  if (!user) return (
+    <div className="user-profile-container">
+      <button className="close-btn-top-right" onClick={() => navigate(-1)} aria-label="Close">
+        X
+      </button>
+      <div className="error">User not found</div>
+    </div>
+  );
 
   return (
     <div className="user-profile-container">
-      <nav className="user-profile-navbar">
-        <div className="logo-wrapper">
-          <img src={logo} alt="Logo" className="logo-img" />
-          <img src={logotext} alt="cobconnect" className="logo-text-img" />
-        </div>
-        <button className="close-btn" onClick={() => navigate(-1)} aria-label="Close">
-          ×
-        </button>
-      </nav>
+      <button className="close-btn-top-right" onClick={() => navigate(-1)} aria-label="Close">
+        ×
+      </button>
       
       <div className="user-profile-content">
         <header className="profile-header">
@@ -170,40 +176,49 @@ const UserProfile = () => {
         
         <div className="profile-card">
           <div className="profile-main-info">
-            {user.profileImg && (
+            {user.profileImg ? (
               <img 
                 src={user.profileImg} 
                 alt="Profile" 
                 className="profile-image"
                 onError={(e) => {
                   e.target.style.display = 'none';
+                  const defaultAvatar = document.createElement('div');
+                  defaultAvatar.className = 'profile-image-default';
+                  defaultAvatar.innerHTML = '<i class="fas fa-user"></i>';
+                  e.target.parentNode.appendChild(defaultAvatar);
                 }}
               />
+            ) : (
+              <div className="profile-image-default">
+                <i className="fas fa-user"></i>
+              </div>
             )}
             <div className="profile-name-email">
               <h2>{user.name}</h2>
               <p className="profile-email">{user.email}</p>
+              <span className="user-type-badge">{user.type.toUpperCase()}</span>
             </div>
           </div>
           
           <div className="profile-details-grid">
             <div className="profile-detail">
-              <h3>Rating</h3>
+              <h3><i className="fas fa-star"></i> Rating</h3>
               <p>{user.rating}</p>
             </div>
             
             <div className="profile-detail">
-              <h3>Phone number</h3>
+              <h3><i className="fas fa-phone"></i> Phone number</h3>
               <p>{user.phone}</p>
             </div>
             
             <div className="profile-detail">
-              <h3>Address</h3>
+              <h3><i className="fas fa-map-marker-alt"></i> Address</h3>
               <p>{user.address}</p>
             </div>
             
             <div className="profile-detail">
-              <h3>Status</h3>
+              <h3><i className="fas fa-user-check"></i> Status</h3>
               <p className={user.isBanned ? 'status-banned' : 'status-active'}>
                 {user.isBanned ? 'Banned' : 'Active'}
               </p>
@@ -211,7 +226,7 @@ const UserProfile = () => {
             
             {user.type === 'cobbler' && certificateUrl && (
               <div className="profile-detail">
-                <h3>Certificate</h3>
+                <h3><i className="fas fa-certificate"></i> Certificate</h3>
                 <p>
                   <button 
                     className="view-certificate-btn"
@@ -225,20 +240,20 @@ const UserProfile = () => {
             
             {user.type === 'cobbler' && user.verification?.toLowerCase() === 'pending' && (
               <div className="profile-detail">
-                <h3>Verification</h3>
+                <h3><i className="fas fa-shield-alt"></i> Verification</h3>
                 <p className="verification-pending">Pending</p>
                 <div className="verification-buttons">
                   <button 
                     className="action-btn accept-btn" 
                     onClick={() => handleVerification('Accepted')}
                   >
-                    Accept
+                    <i className="fas fa-check"></i> Accept
                   </button>
                   <button 
                     className="action-btn decline-btn" 
                     onClick={() => handleVerification('Declined')}
                   >
-                    Decline
+                    <i className="fas fa-times"></i> Decline
                   </button>
                 </div>
               </div>
@@ -247,28 +262,28 @@ const UserProfile = () => {
 
           <div className="action-buttons">
             <button 
-              className="action-btn reset-btn" 
+              className="action-btn reset-pass-btn" 
               onClick={handleResetPassword}
             >
-              Reset Password
+              <i className="fas fa-key"></i> Reset Password
             </button>
             <button 
               className="action-btn reset-btn" 
               onClick={handleResetEmail}
             >
-              Reset Email
+              <i className="fas fa-envelope"></i> Reset Email
             </button>
             <button 
               className="action-btn ban-btn" 
               onClick={handleBanAccount}
             >
-              {user.isBanned ? 'Unban Account' : 'Ban Account'}
+              <i className="fas fa-ban"></i> {user.isBanned ? 'Unban Account' : 'Ban Account'}
             </button>
             <button 
               className="action-btn delete-btn" 
               onClick={handleDeleteAccount}
             >
-              Delete Account
+              <i className="fas fa-trash-alt"></i> Delete Account
             </button>
           </div>
         </div>
@@ -294,4 +309,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default UserProfile;   
