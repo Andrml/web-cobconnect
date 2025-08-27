@@ -97,7 +97,6 @@ const handleLogin = async (e) => {
             <div className="checkbox-container">
                 <input type="checkbox" id="rememberMe" />
                 <label htmlFor="rememberMe">Remember me</label>
-                <Link to="/forgot-password" className="forgot-password">Forgot Password?</Link>
             </div>
             <button type="submit" className="login-button">Login</button>
           </form>
