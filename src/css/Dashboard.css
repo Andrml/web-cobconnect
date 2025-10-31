@@ -216,7 +216,10 @@
   background: #d4edda;
   color: #155724;
 }
-
+.transaction-item.cancelled .status-badge {
+  background: #f7f4f4;
+  color: #e80808;
+}
 .empty-state {
   padding: 2rem;
   text-align: center;

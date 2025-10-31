@@ -52,8 +52,9 @@
 
 .post-container {
   background: white;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   border-radius: 10px;
+  border-color: rgb(33, 98, 202);
   padding: 1.5rem;
   margin-bottom: 2rem;
 }
@@ -61,8 +62,9 @@
 .announcement-input {
   width: 100%;
   min-height: 120px;
-  padding: 1rem;
+  padding: 0.1rem;
   border: 1px solid var(--border);
+  border-color: rgb(33, 98, 202);
   border-radius: 8px;
   font-size: 1rem;
   resize: vertical;

@@ -17,50 +17,60 @@ const Dashboard = () => {
   const [walletBalance, setWalletBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
 
+  const comissionRate = 0.05;
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-    
-        const cobblersSnapshot = await getDocs(collection(db, "cobblers"));
-        const customersSnapshot = await getDocs(collection(db, "customers"));
-        setCobblersCount(cobblersSnapshot.size);
-        setCustomersCount(customersSnapshot.size);
-    
-        const adminWalletRef = doc(db, "wallet", "AdminWallet");
-        const adminWalletSnap = await getDoc(adminWalletRef);
-        if (adminWalletSnap.exists()) {
-          const data = adminWalletSnap.data();
-          setWalletBalance(data.balance || 0);
-        }
-        
-        const transactionHistoryRef = collection(db, "wallet", "AdminWallet", "transactionHistory");
-        const transactionsSnapshot = await getDocs(transactionHistoryRef);
-        const fetchedTransactions = await Promise.all(
-          transactionsSnapshot.docs.map(async (doc) => {
-            const data = doc.data();
-            const fee = data.addedBalance || 0;
-            const totalAmount = fee / 0.10;
-        
-            return {
-              id: doc.id,
-              date: new Date(data.timestamp).toLocaleString(),
-              fee: fee,
-              amount: totalAmount,
-              status: "success",
-            };
-          })
-        );
-        setTransactions(fetchedTransactions);        
-      
-      } catch (err) {
-        console.error("Error fetching dashboard data:", err);
-      } finally {
-        setIsLoading(false);
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
+
+      const cobblersSnapshot = await getDocs(collection(db, "cobblers"));
+      const customersSnapshot = await getDocs(collection(db, "customers"));
+      setCobblersCount(cobblersSnapshot.size);
+      setCustomersCount(customersSnapshot.size);
+
+      const adminWalletRef = doc(db, "wallet", "AdminWallet");
+      const adminWalletSnap = await getDoc(adminWalletRef);
+      if (adminWalletSnap.exists()) {
+        const data = adminWalletSnap.data();
+        setWalletBalance(data.balance || 0);
       }
-    };
-    fetchData();
-  }, []);
+
+      const transactionHistoryRef = collection(db, "wallet", "AdminWallet", "transactionHistory");
+      const transactionsSnapshot = await getDocs(transactionHistoryRef);
+
+      const fetchedTransactions = await Promise.all(
+        transactionsSnapshot.docs.map(async (doc) => {
+          const data = doc.data();
+          const fee = data.addedBalance || 0;
+          const totalAmount = fee / comissionRate;
+
+          return {
+            id: doc.id,
+            timestamp: data.timestamp,
+            date: new Date(data.timestamp).toLocaleString(),
+            fee: fee,
+            amount: totalAmount,
+            status: totalAmount > 0 ? "success" : "cancelled",
+          };
+        })
+      );
+
+      // 🧾 Sort transactions by timestamp (newest → oldest)
+      const sortedTransactions = fetchedTransactions.sort(
+        (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+      );
+
+      setTransactions(sortedTransactions);
+    } catch (err) {
+      console.error("Error fetching dashboard data:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
+
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-PH', {
@@ -141,7 +151,7 @@ const Dashboard = () => {
           <div className="wallet-card">
             <div className="card-header">
               <h2>Transaction History</h2>
-              <span className="commission-rate">10% Commission</span>
+              <span className="commission-rate">{comissionRate * 100}% Commission</span>
             </div>
             
             <div className="transaction-list">
