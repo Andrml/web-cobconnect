@@ -17,7 +17,7 @@ const Dashboard = () => {
   const [walletBalance, setWalletBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
 
-  const comissionRate = 0.05;
+  const comissionRate = 0.10;
   useEffect(() => {
   const fetchData = async () => {
     try {
@@ -55,7 +55,6 @@ const Dashboard = () => {
         })
       );
 
-      // 🧾 Sort transactions by timestamp (newest → oldest)
       const sortedTransactions = fetchedTransactions.sort(
         (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
       );

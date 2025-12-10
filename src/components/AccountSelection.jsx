@@ -108,41 +108,8 @@ const AccountSelection = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
             />
-            <button 
-              className="filter-toggle"
-              onClick={() => setShowFilters(!showFilters)}
-            >
-              <FiFilter />
-              Filters
-            </button>
           </div>
         </div>
-
-        {showFilters && (
-          <div className="filters-section">
-            <div className="filter-options">
-              <button 
-                className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
-                onClick={() => setFilter('all')}
-              >
-                All Users
-              </button>
-              <button 
-                className={`filter-btn ${filter === 'cobbler' ? 'active' : ''}`}
-                onClick={() => setFilter('cobbler')}
-              >
-                Cobblers
-              </button>
-              <button 
-                className={`filter-btn ${filter === 'customer' ? 'active' : ''}`}
-                onClick={() => setFilter('customer')}
-              >
-                Customers
-              </button>
-            </div>
-          </div>
-        )}
-
         <div className="stats-container">
           <div className={`stat-card total ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>
             <div className="stat-icon"><FiUsers size={24} /></div>

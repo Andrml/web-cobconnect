@@ -319,8 +319,48 @@
 .error {
   color: #e53e3e;
 }
+.feedback-card {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  max-height: 300px;  
+  overflow-y: auto;
+}
 
-/* Responsive Design */
+.feedback-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feedback-item {
+  background: #f7f7f7;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.feedback-rating {
+  color: gold;
+  font-size: 18px;
+}
+
+.feedback-body {
+  margin: 5px 0;
+}
+
+.feedback-date {
+  font-size: 12px;
+  color: #666;
+}
+
+.no-feedback {
+  color: gray;
+  font-style: italic;
+}
+
+
 @media (max-width: 900px) {
   .profile-card {
     flex-direction: column;
